@@ -13,4 +13,15 @@ public class Student {
     private String surname;
     private Integer age;
     private School school;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", school=" + school +
+                '}';
+    }
 }

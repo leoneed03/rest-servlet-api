@@ -6,8 +6,8 @@ import org.app.model.Student;
 import java.util.*;
 
 public class StudentService {
-    private final Map<Long, List<Student>> studentsBySchoolIndex = new HashMap<>();
-    private final NavigableMap<Long, Student> studentsByIndex = new TreeMap<>();
+    private static final Map<Long, List<Student>> studentsBySchoolIndex = new HashMap<>();
+    private static final NavigableMap<Long, Student> studentsByIndex = new TreeMap<>();
 
     public StudentService() {
         Long schoolIndexFirst = (long) 1;
@@ -43,11 +43,12 @@ public class StudentService {
         studentsBySchoolIndex.put(schoolIndexSecond, studentsSecondSchool);
     }
 
-    public Optional<List<Student>> getListOfStudents(Long schoolIndex) {
+    public List<Student> getListOfStudents() {
 
-        List<Student> studentList = studentsBySchoolIndex.get(schoolIndex);
-
-        return Optional.ofNullable(studentList);
+        for (Map.Entry<Long, Student> studentEntry: studentsByIndex.entrySet()) {
+            System.out.println(studentEntry.getKey() + " " + studentEntry.getValue().toString());
+        }
+        return new ArrayList<>(studentsByIndex.values());
     }
 
     public Optional<Student> getStudentOrEmpty(Long id) {
@@ -58,6 +59,8 @@ public class StudentService {
         Long index = studentsByIndex.ceilingKey(Long.MIN_VALUE);
 
         studentsByIndex.put(index, student);
+
+        getListOfStudents();
 
         return index;
     }
@@ -80,7 +83,9 @@ public class StudentService {
 
         if (studentsByIndex.containsKey(id)) {
 
+            System.out.println("FOUND: " + studentsByIndex.get(id));
             studentsByIndex.put(id, student);
+            System.out.println("ALTERED: " + studentsByIndex.get(id));
 
             return Optional.of(studentsByIndex.get(id));
 
