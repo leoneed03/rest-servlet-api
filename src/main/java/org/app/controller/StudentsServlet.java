@@ -3,7 +3,9 @@ package org.app.controller;
 import org.app.model.Student;
 import org.app.service.StudentService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,7 @@ public class StudentsServlet {
     @Produces("application/json")
     public Response getStudent(@PathParam("id") final Long id) {
 
+        System.out.println("INSIDE GET");
         Optional<Student> studentOptional = studentService.getStudentOrEmpty(id);
 
         if (studentOptional.isPresent()) {
@@ -42,11 +45,13 @@ public class StudentsServlet {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public Response saveStudent(Student student) {
+    public Student saveStudent(
+            @Context HttpServletResponse httpServletResponse, Student student) {
 
-        studentService.addStudent(student);
-
-        return Response.status(Response.Status.CREATED).entity(student).build();
+        Student savedStudent = studentService.saveStudent(student);
+        httpServletResponse.setStatus(204);
+        return savedStudent;
+//        return Response.status(Response.Status.CREATED).entity().build();
     }
 
     @PUT
@@ -62,6 +67,20 @@ public class StudentsServlet {
         if (studentFound.isPresent()) {
 
             return Response.status(Response.Status.OK).entity(studentFound.get()).build();
+
+        } else {
+
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteStudent(@PathParam("id") final Long id) {
+
+        if (studentService.deleteStudent(id)) {
+
+            return Response.status(Response.Status.NO_CONTENT).build();
 
         } else {
 

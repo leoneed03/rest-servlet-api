@@ -55,14 +55,13 @@ public class StudentService {
         return Optional.ofNullable(studentsByIndex.get(id));
     }
 
-    public Long addStudent(Student student) {
-        Long index = studentsByIndex.ceilingKey(Long.MIN_VALUE);
+    public Student saveStudent(Student student) {
+        Long index = studentsByIndex.lastKey() + 1;
+        student.setId(index);
 
         studentsByIndex.put(index, student);
 
-        getListOfStudents();
-
-        return index;
+        return studentsByIndex.get(index);
     }
 
     public boolean deleteStudent(Long id) {
