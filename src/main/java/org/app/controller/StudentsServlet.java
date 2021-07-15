@@ -19,7 +19,6 @@ public class StudentsServlet {
     @Produces("application/json")
     public List<Student> getAllStudents() {
 
-        System.out.println("GET ALL STUDENTS");
         return studentService.getListOfStudents();
     }
 
@@ -28,7 +27,6 @@ public class StudentsServlet {
     @Produces("application/json")
     public Response getStudent(@PathParam("id") final Long id) {
 
-        System.out.println("INSIDE GET");
         Optional<Student> studentOptional = studentService.getStudentOrEmpty(id);
 
         if (studentOptional.isPresent()) {

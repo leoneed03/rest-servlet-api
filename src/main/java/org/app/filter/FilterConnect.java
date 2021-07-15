@@ -1,8 +1,8 @@
 package org.app.filter;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Enumeration;
 
 public class FilterConnect implements Filter {
     private FilterConfig config;
@@ -20,14 +20,11 @@ public class FilterConnect implements Filter {
                          FilterChain chain) throws IOException, ServletException {
 
         System.out.println("FILTER REQUEST");
-//        System.out.println(request.getServerName());
-//
-//        Enumeration<String> name = request.getParameterNames();
-//
-//        while (name.hasMoreElements()) {
-//            String stringName = name.nextElement();
-//            System.out.println(request.getParameter(stringName));
-//        }
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
+        System.out.println("__Method:" + httpServletRequest.getMethod());
+        System.out.println("_____URL:" + httpServletRequest.getRequestURL());
+        System.out.println("_____URI:" + httpServletRequest.getRequestURI());
 
         chain.doFilter(request, response);
     }

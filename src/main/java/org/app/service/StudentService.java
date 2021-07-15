@@ -6,7 +6,6 @@ import org.app.model.Student;
 import java.util.*;
 
 public class StudentService {
-    private static final Map<Long, List<Student>> studentsBySchoolIndex = new HashMap<>();
     private static final NavigableMap<Long, Student> studentsByIndex = new TreeMap<>();
 
     public StudentService() {
@@ -38,16 +37,10 @@ public class StudentService {
 
         List<Student> studentsSecondSchool = new ArrayList<>();
         studentsSecondSchool.add(studentJara);
-
-        studentsBySchoolIndex.put(schoolIndexFirst, studentsFirstSchool);
-        studentsBySchoolIndex.put(schoolIndexSecond, studentsSecondSchool);
     }
 
     public List<Student> getListOfStudents() {
 
-        for (Map.Entry<Long, Student> studentEntry: studentsByIndex.entrySet()) {
-            System.out.println(studentEntry.getKey() + " " + studentEntry.getValue().toString());
-        }
         return new ArrayList<>(studentsByIndex.values());
     }
 
@@ -82,9 +75,7 @@ public class StudentService {
 
         if (studentsByIndex.containsKey(id)) {
 
-            System.out.println("FOUND: " + studentsByIndex.get(id));
             studentsByIndex.put(id, student);
-            System.out.println("ALTERED: " + studentsByIndex.get(id));
 
             return Optional.of(studentsByIndex.get(id));
 
